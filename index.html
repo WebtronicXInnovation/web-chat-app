@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+MX:wght@100..400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1 new-chat">
+                <!-- New Chat Section -->
+                <button class="btn  mt-2" id="newChatBtn" data-toggle="modal" data-target="#newChatModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+<br>
+                <!-- Profile Creation Section -->
+                <button class="btn  mt-2" id="profileBtn" data-toggle="modal" data-target="#profileModal">
+                    <i class="fas fa-user"></i>
+                </button>
+
+                <!-- Display Profile List -->
+                <div id="profileList" class="mt-2"></div>
+               
+            </div>
+
+            <div class="col-3 chat-contacts">
+                <!-- Chat Contacts Section -->
+                <div class="search-bar">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search" id="searchInput">
+                    </div>
+                </div>
+                <div class="contacts-list">
+                    <!-- List of contacts -->
+                    <ul class="list-group list-group-flush" id="contactsList">
+                        <!-- Contacts will be dynamically added here -->
+                        <!-- <li class="list-group-item">Contact 1</li>
+                        <li class="list-group-item">Contact 2</li>
+                        <li class="list-group-item">Contact 3</li> -->
+                        <!-- Add more contacts as needed -->
+                    </ul>
+                    <div id="noResultsMessage" class="text-center mt-2">No results found</div>
+                </div>
+            </div>
+<!-- Chat Details Modal -->
+<div class="modal fade" id="chatDetailsModal" tabindex="-1" aria-labelledby="chatDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatDetailsModalLabel">Contact Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="chatDetailsForm">
+                    <!-- <div class="form-group text-center">
+                        <div id="chatDetailsAvatar" class="profile-avatar"></div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="chatDetailsNameInput">Name</label>
+                        <input type="text" class="form-control" id="chatDetailsNameInput" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="chatDetailsEmailInput">Email</label>
+                        <input type="email" class="form-control" id="chatDetailsEmailInput" readonly>
+                        <div id="chatdetailmsg"></div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button" id="editContactIcon" class="btn btn-outline-secondary"><i class="fas fa-edit"></i></button>
+                        <button type="button" id="saveContactDetails" class="btn btn-primary" style="display: none;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="col-8 chat-window">
+                <!-- Chat Window Section -->
+                <div class="chat-header p-2 border-bottom">
+                    <h5> <span id="chatWith">Select a contact</span> <i class="fas fa-user-circle" id="chatDetailsIcon" style="cursor: pointer; "></i>
+                    </h5>
+                    </div>
+                <div class="chat-messages" style="height: calc(100vh - 140px);" id="chatMessages">
+                    <!-- Messages will be displayed here -->
+                </div>
+                <div class="chat-input p-2 border-top">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Type a message" id="messageInput">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- "Go to Bottom" icon -->
+                <div class="go-to-bottom" id="goToBottomBtn" title="Go to Bottom">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- Modal for New Chat -->
+    <div class="modal fade" id="newChatModal" tabindex="-1" aria-labelledby="newChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newChatModalLabel">New Chat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="newChatForm">
+                        <div class="form-group">
+                            <label for="contactName">Name</label>
+                            <input type="text" class="form-control" id="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email address</label>
+                            <input type="email" class="form-control" id="contactEmail" required>
+                            <div id="newchatemailmsg"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Contact</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ <!-- Profile Details Modal -->
+<div class="modal fade" id="profileDetailsModal" tabindex="-1" aria-labelledby="profileDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileDetailsModalLabel">Profile Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-details-avatar text-center mb-3" id="profileDetailsAvatar" style="font-size: 40px; font-weight: bold; border-radius: 50%; width: 80px; height: 80px; line-height: 80px; background-color: #9e0087; color: white;"></div>
+                <form id="profileDetailsForm">
+                    <div class="form-group">
+                        <label for="profileDetailsNameInput">Name</label>
+                        <input type="text" class="form-control" id="profileDetailsNameInput" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileDetailsEmailInput">Email</label>
+                        <input type="email" class="form-control" id="profileDetailsEmailInput" readonly>
+				<div id="profiledetailmessage"></div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="button" id="editProfileDetailsBtn" class="btn btn-outline-secondary">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" id="saveProfileDetailsBtn" class="btn btn-primary" style="display: none;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for User Profile -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="userName">Name</label>
+                        <input type="text" class="form-control" id="userName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email address</label>
+                        <input type="email" class="form-control" id="userEmail" required>
+				<div id="profilemsg"></div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="userPassword">Password</label>
+                        <input type="password" class="form-control" id="userPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
